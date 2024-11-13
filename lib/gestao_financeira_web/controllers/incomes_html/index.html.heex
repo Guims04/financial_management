@@ -1,0 +1,26 @@
+<.header>
+  Listing Incomes
+  <:actions>
+    <.link href={~p"/incomes/new"}>
+      <.button>New Incomes</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="incomes" rows={@incomes_collection} row_click={&JS.navigate(~p"/incomes/#{&1}")}>
+  <:col :let={incomes} label="Amount"><%= incomes.amount %></:col>
+  <:col :let={incomes} label="Description"><%= incomes.description %></:col>
+  <:col :let={incomes} label="Date"><%= incomes.date %></:col>
+  <:col :let={incomes} label="Category"><%= incomes.category %></:col>
+  <:action :let={incomes}>
+    <div class="sr-only">
+      <.link navigate={~p"/incomes/#{incomes}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/incomes/#{incomes}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={incomes}>
+    <.link href={~p"/incomes/#{incomes}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
