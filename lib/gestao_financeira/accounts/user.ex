@@ -9,6 +9,9 @@ defmodule GestaoFinanceira.Accounts.User do
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
 
+    # Relacionamentos
+    has_many :incomes, GestaoFinanceira.Transactions.Incomes
+
     timestamps(type: :utc_datetime)
   end
 

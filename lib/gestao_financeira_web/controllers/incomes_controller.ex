@@ -5,7 +5,8 @@ defmodule GestaoFinanceiraWeb.IncomesController do
   alias GestaoFinanceira.Transactions.Incomes
 
   def index(conn, _params) do
-    incomes = Transactions.list_incomes()
+    user_id = conn.assigns[:current_user].id
+    incomes = Transactions.list_incomes(user_id)
     render(conn, :index, incomes_collection: incomes)
   end
 
@@ -15,7 +16,8 @@ defmodule GestaoFinanceiraWeb.IncomesController do
   end
 
   def create(conn, %{"incomes" => incomes_params}) do
-    case Transactions.create_incomes(incomes_params) do
+    user_id = conn.assigns[:current_user].id
+    case Transactions.create_incomes(incomes_params, user_id) do
       {:ok, incomes} ->
         conn
         |> put_flash(:info, "Incomes created successfully.")

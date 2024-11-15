@@ -17,8 +17,8 @@ defmodule GestaoFinanceira.Transactions do
       [%Incomes{}, ...]
 
   """
-  def list_incomes do
-    Repo.all(Incomes)
+  def list_incomes(user_id) do
+    Repo.all(from i in Incomes, where: i.user_id == ^user_id)
   end
 
   @doc """
@@ -49,9 +49,9 @@ defmodule GestaoFinanceira.Transactions do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_incomes(attrs \\ %{}) do
+  def create_incomes(attrs \\ %{}, user_id) do
     %Incomes{}
-    |> Incomes.changeset(attrs)
+    |> Incomes.changeset(Map.put(attrs, "user_id", user_id))
     |> Repo.insert()
   end
 
