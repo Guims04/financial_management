@@ -1,0 +1,8 @@
+<.header>
+  New Expenses
+  <:subtitle>Use this form to manage expenses records in your database.</:subtitle>
+</.header>
+
+<.expenses_form changeset={@changeset} action={~p"/expenses"} />
+
+<.back navigate={~p"/expenses"}>Back to expenses</.back>

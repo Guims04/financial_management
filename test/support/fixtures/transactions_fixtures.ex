@@ -20,4 +20,21 @@ defmodule GestaoFinanceira.TransactionsFixtures do
 
     incomes
   end
+
+  @doc """
+  Generate a expenses.
+  """
+  def expenses_fixture(attrs \\ %{}) do
+    {:ok, expenses} =
+      attrs
+      |> Enum.into(%{
+        amount: "120.5",
+        category: "some category",
+        date: ~D[2024-11-14],
+        description: "some description"
+      })
+      |> GestaoFinanceira.Transactions.create_expenses()
+
+    expenses
+  end
 end

@@ -69,6 +69,7 @@ defmodule GestaoFinanceiraWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
       resources "/incomes", IncomesController
+      resources "/expenses", ExpensesController
     end
   end
 

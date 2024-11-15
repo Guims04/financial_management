@@ -144,4 +144,100 @@ defmodule GestaoFinanceira.Transactions do
   def change_incomes(%Incomes{} = incomes, attrs \\ %{}) do
     Incomes.changeset(incomes, attrs)
   end
+
+  alias GestaoFinanceira.Transactions.Expenses
+
+  @doc """
+  Returns the list of expenses.
+
+  ## Examples
+
+      iex> list_expenses()
+      [%Expenses{}, ...]
+
+  """
+  def list_expenses do
+    Repo.all(Expenses)
+  end
+
+  @doc """
+  Gets a single expenses.
+
+  Raises `Ecto.NoResultsError` if the Expenses does not exist.
+
+  ## Examples
+
+      iex> get_expenses!(123)
+      %Expenses{}
+
+      iex> get_expenses!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_expenses!(id), do: Repo.get!(Expenses, id)
+
+  @doc """
+  Creates a expenses.
+
+  ## Examples
+
+      iex> create_expenses(%{field: value})
+      {:ok, %Expenses{}}
+
+      iex> create_expenses(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_expenses(attrs \\ %{}) do
+    %Expenses{}
+    |> Expenses.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a expenses.
+
+  ## Examples
+
+      iex> update_expenses(expenses, %{field: new_value})
+      {:ok, %Expenses{}}
+
+      iex> update_expenses(expenses, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_expenses(%Expenses{} = expenses, attrs) do
+    expenses
+    |> Expenses.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a expenses.
+
+  ## Examples
+
+      iex> delete_expenses(expenses)
+      {:ok, %Expenses{}}
+
+      iex> delete_expenses(expenses)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_expenses(%Expenses{} = expenses) do
+    Repo.delete(expenses)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking expenses changes.
+
+  ## Examples
+
+      iex> change_expenses(expenses)
+      %Ecto.Changeset{data: %Expenses{}}
+
+  """
+  def change_expenses(%Expenses{} = expenses, attrs \\ %{}) do
+    Expenses.changeset(expenses, attrs)
+  end
 end
