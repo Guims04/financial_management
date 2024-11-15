@@ -17,9 +17,52 @@ defmodule GestaoFinanceira.Transactions do
       [%Incomes{}, ...]
 
   """
-  def list_incomes(user_id) do
-    Repo.all(from i in Incomes, where: i.user_id == ^user_id)
+  def list_incomes(user_id, start_date, end_date, filter, month) do
+    query = from i in Incomes,
+            where: i.user_id == ^user_id
+
+    query =
+      case start_date do
+        nil -> query
+        "" -> query
+        _ ->
+          start_date = elem(start_date, 1)
+          from q in query, where: q.date >= ^start_date
+      end
+
+    # Aplicando filtro para a data de fim
+    query =
+      case end_date do
+        nil -> query
+        "" -> query
+        _ ->
+          end_date = elem(end_date, 1)
+          from q in query, where: q.date <= ^end_date
+      end
+
+    # Aplicando filtro para a categoria (se fornecido)
+    query =
+      case filter do
+        "lowest" -> from q in query, order_by: [asc: q.amount]  # Ordem crescente (menor para maior)
+        "highest" -> from q in query, order_by: [desc: q.amount]  # Ordem decrescente (maior para menor)
+        _ -> query
+      end
+
+    # Aplicando filtro para o mês (se fornecido)
+    query =
+      case month do
+        "" -> query
+        nil -> query
+        _ ->
+          # Garantir que o valor de month seja um inteiro
+          month_int = String.to_integer(month)
+          from q in query, where: fragment("date_part(?, ?)", "month", q.date) == ^month_int
+      end
+
+    # Executando a consulta
+    Repo.all(query)
   end
+
 
   @doc """
   Gets a single incomes.

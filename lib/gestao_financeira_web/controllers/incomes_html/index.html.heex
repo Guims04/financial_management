@@ -1,26 +1,90 @@
-<.header>
-  Listing Incomes
-  <:actions>
-    <.link href={~p"/incomes/new"}>
-      <.button>New Incomes</.button>
-    </.link>
-  </:actions>
+<.header class="bg-white p-5 rounded shadow">
+  <div class="flex flex-col gap-4">
+    <div class="flex justify-between">
+      <h2 class="text-brand"> Listing Incomes </h2>
+      <.link href={~p"/incomes/new"}>
+        <.button class="bg-brand h-8 w-8 pt-0 pl-0 pr-0 pb-0" >
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+          </svg>
+        </.button>
+      </.link>
+    </div>
+
+    <form method="get" action={~p"/incomes"}>
+      <div class="grid grid-cols-4 gap-4">
+        <div class="col-span-1">
+          <!-- Filtro por mês -->
+          <label class="text-brand" for="month">Month:</label>
+          <select name="month" class="rounded p-2 pr-10 border border-brand text-gray-600 w-full">
+            <option value="">Selecione um mês</option>
+            <%= for month <- 1..12 do %>
+              <option value={month}>
+                <%= @month_names[month] %>
+              </option>
+            <% end %>
+          </select>
+        </div>
+    
+        <div class="col-span-1">
+          <!-- Filtro por tipo de receita -->
+          <label class="text-brand" for="filter">Order:</label>
+          <select name="filter" class="rounded p-2 pr-10 border border-brand text-gray-600 w-full">
+            <option value="">Nenhum selecionado</option>
+            <option value="highest">Maiores Receitas</option>
+            <option value="lowest">Menores Receitas</option>
+          </select>
+        </div>
+        
+        <div class="col-span-1">
+          <!-- Filtro por período -->
+          <label class="text-brand" for="start_date">Start:</label>
+          <input type="date" name="start_date" class="rounded p-2 border border-brand text-gray-600 w-full" />
+        </div>
+
+        <div class="col-span-1">
+          <!-- Filtro por período -->
+          <label class="text-brand" for="end_date">End:</label>
+          <input type="date" name="end_date" class="rounded p-2 border border-brand text-gray-600 w-full" />
+        </div>
+    
+        <div class="col-span-4">
+          <div class="flex justify-center">
+            <.button type="submit" class="bg-brand px-10" >Filtrar</.button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </.header>
 
-<.table id="incomes" rows={@incomes_collection} row_click={&JS.navigate(~p"/incomes/#{&1}")}>
-  <:col :let={incomes} label="Amount"><%= incomes.amount %></:col>
-  <:col :let={incomes} label="Description"><%= incomes.description %></:col>
-  <:col :let={incomes} label="Date"><%= incomes.date %></:col>
-  <:col :let={incomes} label="Category"><%= incomes.category %></:col>
-  <:action :let={incomes}>
-    <div class="sr-only">
-      <.link navigate={~p"/incomes/#{incomes}"}>Show</.link>
-    </div>
-    <.link navigate={~p"/incomes/#{incomes}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={incomes}>
-    <.link href={~p"/incomes/#{incomes}"} method="delete" data-confirm="Are you sure?">
-      Delete
-    </.link>
-  </:action>
-</.table>
+
+<div class="bg-white p-5 rounded mt-5 shadow">
+  <.table id="incomes" rows={@incomes_collection} row_click={&JS.navigate(~p"/incomes/#{&1}")}>
+    <:col :let={incomes} label="Amount"><%= incomes.amount %></:col>
+    <:col :let={incomes} label="Description"><%= incomes.description %></:col>
+    <:col :let={incomes} label="Date"><%= incomes.date %></:col>
+    <:col :let={incomes} label="Category"><%= incomes.category %></:col>
+    <:action :let={incomes}>
+      <div class="sr-only">
+        <.link navigate={~p"/incomes/#{incomes}"}>Show</.link>
+      </div>
+      <div class="flex gap-5 pr-5 translate-y-[-11px]">
+        <div class="text-green-600">
+          <.link navigate={~p"/incomes/#{incomes}/edit"}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+              <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+            </svg>
+          </.link>
+        </div>
+        <div class="text-red-600">
+          <.link href={~p"/incomes/#{incomes}"} method="delete" data-confirm="Are you sure?">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+              <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+            </svg>
+          </.link>
+        </div>
+      </div>
+    </:action>
+  </.table>
+</div>
