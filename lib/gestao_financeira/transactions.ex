@@ -156,8 +156,49 @@ defmodule GestaoFinanceira.Transactions do
       [%Expenses{}, ...]
 
   """
-  def list_expenses do
-    Repo.all(Expenses)
+  def list_expenses(user_id, start_date, end_date, filter, month) do
+    query = from i in Expenses,
+            where: i.user_id == ^user_id
+
+    query =
+      case start_date do
+        nil -> query
+        "" -> query
+        _ ->
+          start_date = elem(start_date, 1)
+          from q in query, where: q.date >= ^start_date
+      end
+
+    # Aplicando filtro para a data de fim
+    query =
+      case end_date do
+        nil -> query
+        "" -> query
+        _ ->
+          end_date = elem(end_date, 1)
+          from q in query, where: q.date <= ^end_date
+      end
+
+    # Aplicando filtro para a categoria (se fornecido)
+    query =
+      case filter do
+        "lowest" -> from q in query, order_by: [asc: q.amount]  # Ordem crescente (menor para maior)
+        "highest" -> from q in query, order_by: [desc: q.amount]  # Ordem decrescente (maior para menor)
+        _ -> query
+      end
+
+    # Aplicando filtro para o mês (se fornecido)
+    query =
+      case month do
+        "" -> query
+        nil -> query
+        _ ->
+          # Garantir que o valor de month seja um inteiro
+          month_int = String.to_integer(month)
+          from q in query, where: fragment("date_part(?, ?)", "month", q.date) == ^month_int
+      end
+
+    Repo.all(query)
   end
 
   @doc """
@@ -188,9 +229,9 @@ defmodule GestaoFinanceira.Transactions do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_expenses(attrs \\ %{}) do
+  def create_expenses(attrs \\ %{}, user_id) do
     %Expenses{}
-    |> Expenses.changeset(attrs)
+    |> Expenses.changeset(Map.put(attrs, "user_id", user_id))
     |> Repo.insert()
   end
 

@@ -4,9 +4,42 @@ defmodule GestaoFinanceiraWeb.ExpensesController do
   alias GestaoFinanceira.Transactions
   alias GestaoFinanceira.Transactions.Expenses
 
-  def index(conn, _params) do
-    expenses = Transactions.list_expenses()
-    render(conn, :index, expenses_collection: expenses)
+  def index(conn, params) do
+    user_id = conn.assigns[:current_user].id
+
+    # Verificando se as datas são válidas
+    start_date =
+      case params["start_date"] do
+        nil -> nil
+        "" -> nil
+        date_str -> Date.from_iso8601(date_str)
+      end
+
+    end_date =
+      case params["end_date"] do
+        nil -> nil
+        "" -> nil
+        date_str -> Date.from_iso8601(date_str)
+      end
+
+    # Aplicando o filtro
+    filter = params["filter"]
+    month = params["month"]
+
+    expenses = Transactions.list_expenses(
+      user_id,
+      start_date,
+      end_date,
+      filter,
+      month
+    )
+
+    month_names = %{
+      1 => "Janeiro", 2 => "Fevereiro", 3 => "Março", 4 => "Abril",
+      5 => "Maio", 6 => "Junho", 7 => "Julho", 8 => "Agosto",
+      9 => "Setembro", 10 => "Outubro", 11 => "Novembro", 12 => "Dezembro"
+    }
+    render(conn, :index, expenses_collection: expenses, month_names: month_names)
   end
 
   def new(conn, _params) do
@@ -15,7 +48,8 @@ defmodule GestaoFinanceiraWeb.ExpensesController do
   end
 
   def create(conn, %{"expenses" => expenses_params}) do
-    case Transactions.create_expenses(expenses_params) do
+    user_id = conn.assigns[:current_user].id
+    case Transactions.create_expenses(expenses_params, user_id) do
       {:ok, expenses} ->
         conn
         |> put_flash(:info, "Expenses created successfully.")

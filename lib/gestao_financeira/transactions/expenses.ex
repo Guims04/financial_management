@@ -8,13 +8,16 @@ defmodule GestaoFinanceira.Transactions.Expenses do
     field :category, :string
     field :amount, :decimal
 
+    # Relacionamentos
+    belongs_to :user, GestaoFinanceira.Accounts.User
+
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(expenses, attrs) do
     expenses
-    |> cast(attrs, [:amount, :description, :date, :category])
-    |> validate_required([:amount, :description, :date, :category])
+    |> cast(attrs, [:amount, :description, :date, :category, :user_id])
+    |> validate_required([:amount, :description, :date, :category, :user_id])
   end
 end
