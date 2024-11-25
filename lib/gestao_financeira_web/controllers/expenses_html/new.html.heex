@@ -1,7 +1,9 @@
-<.header>
-  New Expenses
-  <:subtitle>Use this form to manage expenses records in your database.</:subtitle>
-</.header>
+<div class="p-3 bg-white border border-yellow-300 rounded-md">
+  <.header>
+    New Expenses
+    <:subtitle>Use this form to manage expenses records in your database.</:subtitle>
+  </.header>
+</div>
 
 <.expenses_form changeset={@changeset} action={~p"/expenses"} />
 

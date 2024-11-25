@@ -1,18 +1,21 @@
-<.header>
-  Incomes <%= @incomes.id %>
-  <:subtitle>This is a incomes record from your database.</:subtitle>
-  <:actions>
-    <.link href={~p"/incomes/#{@incomes}/edit"}>
-      <.button>Edit incomes</.button>
-    </.link>
-  </:actions>
-</.header>
 
-<.list>
-  <:item title="Amount"><%= @incomes.amount %></:item>
-  <:item title="Description"><%= @incomes.description %></:item>
-  <:item title="Date"><%= @incomes.date %></:item>
-  <:item title="Category"><%= @incomes.category %></:item>
-</.list>
+<div class="bg-white p-4 rounded-md shadow-md border border-brand">
+  <.header>
+    Incomes <%= @incomes.id %>
+    <:subtitle>This is a incomes record from your database.</:subtitle>
+    <:actions>
+      <.link href={~p"/incomes/#{@incomes}/edit"}>
+        <.button>Edit incomes</.button>
+      </.link>
+    </:actions>
+  </.header>
 
-<.back navigate={~p"/incomes"}>Back to incomes</.back>
+  <.list>
+    <:item title="Amount"><%= @incomes.amount %></:item>
+    <:item title="Description"><%= @incomes.description %></:item>
+    <:item title="Date"><%= @incomes.date %></:item>
+    <:item title="Category"><%= @incomes.category %></:item>
+  </.list>
+
+  <.back navigate={~p"/incomes"}>Back to incomes</.back>
+</div>

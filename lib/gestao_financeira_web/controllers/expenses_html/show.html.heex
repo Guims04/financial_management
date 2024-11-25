@@ -1,18 +1,20 @@
-<.header>
-  Expenses <%= @expenses.id %>
-  <:subtitle>This is a expenses record from your database.</:subtitle>
-  <:actions>
-    <.link href={~p"/expenses/#{@expenses}/edit"}>
-      <.button>Edit expenses</.button>
-    </.link>
-  </:actions>
-</.header>
+<div class="bg-white p-4 rounded-md shadow-md border border-yellow-300">
+  <.header>
+    Expenses <%= @expenses.id %>
+    <:subtitle>This is a expenses record from your database.</:subtitle>
+    <:actions>
+      <.link href={~p"/expenses/#{@expenses}/edit"}>
+        <.button>Edit expenses</.button>
+      </.link>
+    </:actions>
+  </.header>
 
-<.list>
-  <:item title="Amount"><%= @expenses.amount %></:item>
-  <:item title="Description"><%= @expenses.description %></:item>
-  <:item title="Date"><%= @expenses.date %></:item>
-  <:item title="Category"><%= @expenses.category %></:item>
-</.list>
+  <.list>
+    <:item title="Amount"><%= @expenses.amount %></:item>
+    <:item title="Description"><%= @expenses.description %></:item>
+    <:item title="Date"><%= @expenses.date %></:item>
+    <:item title="Category"><%= @expenses.category %></:item>
+  </.list>
 
-<.back navigate={~p"/expenses"}>Back to expenses</.back>
+  <.back navigate={~p"/expenses"}>Back to expenses</.back>
+</div>

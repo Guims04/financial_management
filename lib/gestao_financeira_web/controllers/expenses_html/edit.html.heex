@@ -1,8 +1,9 @@
-<.header>
-  Edit Expenses <%= @expenses.id %>
-  <:subtitle>Use this form to manage expenses records in your database.</:subtitle>
-</.header>
-
+<div class="bg-white p-3 border border-yellow-300 rounded-md">
+  <.header>
+    Edit Expenses <%= @expenses.id %>
+    <:subtitle>Use this form to manage expenses records in your database.</:subtitle>
+  </.header>
+</div>
 <.expenses_form changeset={@changeset} action={~p"/expenses/#{@expenses}"} />
 
 <.back navigate={~p"/expenses"}>Back to expenses</.back>

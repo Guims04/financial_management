@@ -1,7 +1,10 @@
-<.header>
-  Edit Incomes <%= @incomes.id %>
-  <:subtitle>Use this form to manage incomes records in your database.</:subtitle>
-</.header>
+
+<div class="bg-white p-3 border border-brand rounded-md">
+  <.header>
+    Edit Incomes <%= @incomes.id %>
+    <:subtitle>Use this form to manage incomes records in your database.</:subtitle>
+  </.header>
+</div>
 
 <.incomes_form changeset={@changeset} action={~p"/incomes/#{@incomes}"} />
 
